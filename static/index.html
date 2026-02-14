@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="AI-Based OSINT Correlation and Social Engineering Exposure Analysis System — CEH-Compliant cybersecurity tool for digital footprint assessment.">
+    <title>OSINT Analyzer — AI-Based Social Engineering Exposure Analysis</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-particles" id="particles"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">Initializing OSINT Analysis Engine...</div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="#" class="logo" onclick="showSection('hero'); return false;">
+                <div class="logo-icon">🔍</div>
+                <div class="logo-text">
+                    <span class="logo-title">OSINT ANALYZER</span>
+                    <span class="logo-subtitle">Social Engineering Exposure</span>
+                </div>
+            </a>
+            <nav class="nav-links">
+                <button class="nav-link active" onclick="showSection('hero')" id="nav-hero">Home</button>
+                <button class="nav-link" onclick="showSection('analyze')" id="nav-analyze">Analyze</button>
+                <button class="nav-link" onclick="showSection('about')" id="nav-about">About</button>
+            </nav>
+            <div class="nav-status">
+                <div class="status-dot"></div>
+                System Online
+            </div>
+        </div>
+    </header>
+
+    <main class="app-container">
+
+        <!-- ═══════════ HERO SECTION ═══════════ -->
+        <section class="section active" id="section-hero">
+            <div class="hero">
+                <div class="hero-badge">🛡️ CEH-COMPLIANT · EDUCATIONAL USE ONLY</div>
+                <h1 class="hero-title">
+                    <span class="gradient-text">AI-Powered OSINT</span><br>
+                    <span class="white-text">Exposure Analysis</span>
+                </h1>
+                <p class="hero-description">
+                    Discover how publicly available information can be correlated using artificial intelligence
+                    to assess social engineering exposure risks. Understand your digital footprint before attackers do.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="12">12</div>
+                        <div class="stat-label">Platforms Scanned</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="5">5</div>
+                        <div class="stat-label">Attack Vectors</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="4">4</div>
+                        <div class="stat-label">AI Engines</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">CEH Compliant</div>
+                    </div>
+                </div>
+                <div class="btn-group" style="justify-content: center; margin-top: 40px;">
+                    <button class="btn btn-primary" onclick="showSection('analyze')">
+                        🚀 Start Analysis
+                    </button>
+                    <button class="btn btn-secondary" onclick="showSection('about')">
+                        📖 Learn More
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════ ANALYSIS SECTION ═══════════ -->
+        <section class="section" id="section-analyze">
+            <div class="section-header">
+                <div class="section-icon cyan">🔬</div>
+                <div>
+                    <h2 class="section-title">OSINT Analysis</h2>
+                    <p class="section-subtitle">Choose an analysis type to assess digital footprint exposure</p>
+                </div>
+            </div>
+
+            <!-- Consolidated Full Analysis Panel -->
+            <div class="card" id="panel-full">
+                <div class="card-title">🎯 Comprehensive OSINT Analysis</div>
+                <div class="card-description">
+                    The ultimate investigation tool. Scans usernames, links, and images simultaneously to detect
+                    digital footprint exposure and social engineering risks.
+                </div>
+
+                <form id="fullAnalysisForm" onsubmit="runFullAnalysis(event)">
+                    <div class="card-grid">
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Target Name or Username *</label>
+                                <input type="text" class="form-input" id="full-username"
+                                    placeholder="e.g. Felix or felix__x01" required maxlength="100">
+                                <div class="form-hint">🔎 Enter the name or handle you want to investigate</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Specific Profile URL</label>
+                                <input type="text" class="form-input" id="full-url"
+                                    placeholder="https://instagram.com/felix__x01">
+                                <div class="form-hint">🔗 Providing a specific link locks the analysis to that identity
+                                </div>
+                            </div>
+
+                            <div class="card-grid" style="gap:12px; margin-bottom:0;">
+                                <div class="form-group">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-input" id="full-location" placeholder="e.g. Dubai">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Occupation</label>
+                                    <input type="text" class="form-input" id="full-job"
+                                        placeholder="e.g. Security Researcher">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Bio / About Text</label>
+                                <textarea class="form-textarea" id="full-bio"
+                                    placeholder="Paste public bio text here for information leakage analysis..."
+                                    maxlength="5000" style="height: 80px;"></textarea>
+                                <div class="form-hint">📝 Helps detect data leakage patterns</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Investigation Image</label>
+                                <div class="dropzone" id="full-dropzone"
+                                    onclick="document.getElementById('full-image').click()">
+                                    <div class="dropzone-icon">📤</div>
+                                    <div class="dropzone-text">Drop image or click to upload</div>
+                                    <div class="dropzone-subtext">JPG, PNG, WebP · Max 10MB</div>
+                                    <div class="dropzone-preview" id="full-preview">
+                                        <img id="full-preview-img" alt="Preview">
+                                    </div>
+                                </div>
+                                <input type="file" class="file-input-hidden" id="full-image"
+                                    accept=".jpg,.jpeg,.png,.gif,.webp,.bmp"
+                                    onchange="previewImage(this, 'full-preview', 'full-preview-img')">
+                                <div class="form-hint">🖼️ Enables AI image similarity and EXIF metadata extraction
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary btn-full" id="btn-full-analyze"
+                            style="padding: 16px;">
+                            🚀 Start Deep OSINT Investigation
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+
+            <!-- CEH Disclaimer -->
+            <div class="ceh-disclaimer">
+                <div class="ceh-icon">🛡️</div>
+                <div class="ceh-text">
+                    <strong>CEH Ethical Compliance Notice:</strong> This tool operates within the boundaries of the
+                    Certified Ethical Hacker (CEH) Code of Ethics. It uses only simulated public data analysis for
+                    educational purposes. No private data is accessed, no real identities are confirmed, and no
+                    authentication mechanisms are bypassed. Results indicate <strong>exposure risk patterns</strong>,
+                    not confirmed identity.
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════ RESULTS SECTION ═══════════ -->
+        <section class="section" id="section-results">
+            <div class="section-header">
+                <div class="section-icon blue">📊</div>
+                <div>
+                    <h2 class="section-title">Analysis Results</h2>
+                    <p class="section-subtitle" id="results-subtitle">Comprehensive OSINT exposure report</p>
+                </div>
+            </div>
+
+            <!-- Report Action Bar -->
+            <div class="report-bar">
+                <div class="report-info">
+                    📋 <strong>Session:</strong> <span id="report-session">—</span>
+                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                    🕐 <span id="report-timestamp">—</span>
+                </div>
+                <div>
+                    <button class="btn btn-secondary" onclick="showSection('analyze')">
+                        🔄 New Analysis
+                    </button>
+                </div>
+            </div>
+
+            <!-- Executive Summary -->
+            <div class="exec-summary" id="exec-summary">
+                <div class="exec-summary-title">📋 Executive Summary</div>
+                <div class="exec-summary-text" id="exec-summary-text"></div>
+            </div>
+
+            <!-- Risk Gauge + Metrics -->
+            <div class="card animate-in stagger-1">
+                <div class="card-title">🎯 Overall Risk Assessment</div>
+                <div class="risk-gauge-container">
+                    <div class="risk-gauge">
+                        <canvas id="riskGaugeCanvas" width="220" height="220"></canvas>
+                        <div class="risk-gauge-center">
+                            <div class="risk-gauge-score" id="riskScore">0</div>
+                            <div class="risk-gauge-label">Risk Score</div>
+                            <div class="risk-gauge-level" id="riskLevel">—</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="riskHeadline" style="text-align:center; font-size:16px; font-weight:700; margin-top:8px;">
+                </div>
+                <div id="riskDescription"
+                    style="text-align:center; font-size:14px; color:var(--text-secondary); margin-top:8px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.6;">
+                </div>
+            </div>
+
+            <!-- Exposure Metrics -->
+            <div class="metrics-row animate-in stagger-2" id="metricsRow"></div>
+
+            <!-- Image Metadata Card -->
+            <div class="card animate-in stagger-2" id="metadataCard" style="display:none;">
+                <div class="card-title">📷 Image Metadata & Technical Analysis</div>
+                <div class="card-description">Technical details extracted from the image file (EXIF, Dimensions,
+                    Software)</div>
+                <div class="agg-grid" id="metadataGrid"></div>
+            </div>
+
+            <!-- Aggregated Profile Data -->
+            <div class="aggregated-profile animate-in stagger-2" id="aggregatedProfile" style="display:none;">
+                <div class="agg-header">
+                    <span style="font-size:24px;">🌐</span>
+                    <div>
+                        <div class="agg-title">Aggregated Cross-Platform Profile</div>
+                        <div class="agg-subtitle">Combined data gathered from all detected platforms</div>
+                    </div>
+                </div>
+                <div class="agg-grid" id="aggGrid"></div>
+            </div>
+
+            <!-- Platform Intelligence -->
+            <div class="card animate-in stagger-3">
+                <div class="card-title">🌐 Cross-Platform Intelligence</div>
+                <div class="card-description">Data gathered and correlated across detected platforms</div>
+                <div class="platform-grid" id="platformGrid"></div>
+            </div>
+
+            <!-- Correlation Details -->
+            <div class="card animate-in stagger-4" id="corrDetailsCard" style="display:none;">
+                <div class="card-title">🔗 Correlation Factors</div>
+                <div class="card-description">Key factors contributing to the correlation confidence score</div>
+                <div class="corr-details" id="corrDetails"></div>
+            </div>
+
+            <!-- Attack Vector Assessment -->
+            <div class="card animate-in stagger-5" id="attackCard" style="display:none;">
+                <div class="card-title">⚔️ Attack Vector Assessment</div>
+                <div class="card-description">Feasibility analysis of social engineering attack methods based on exposed
+                    data</div>
+                <div class="attack-vectors" id="attackVectors"></div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="card animate-in stagger-6" id="recCard" style="display:none;">
+                <div class="card-title">🛡️ Defensive Recommendations</div>
+                <div class="card-description">Actionable steps to reduce social engineering exposure risk</div>
+                <div class="recommendations" id="recommendations"></div>
+            </div>
+
+            <!-- CEH Report Footer -->
+            <div class="ceh-disclaimer">
+                <div class="ceh-icon">⚠️</div>
+                <div class="ceh-text">
+                    <strong>Disclaimer:</strong> This report assesses exposure RISK based on public data patterns.
+                    It does not confirm identity, access private data, or enable attacks. Results are generated using
+                    simulated cross-platform analysis for educational and defensive cybersecurity awareness purposes
+                    only.
+                    Fully compliant with the <strong>CEH Code of Ethics</strong>.
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════ ABOUT SECTION ═══════════ -->
+        <section class="section" id="section-about">
+            <div class="section-header">
+                <div class="section-icon purple">📖</div>
+                <div>
+                    <h2 class="section-title">About This System</h2>
+                    <p class="section-subtitle">Understanding OSINT and Social Engineering Exposure</p>
+                </div>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-title">🎯 What is OSINT?</div>
+                    <div class="card-description" style="margin-bottom:0">
+                        Open-Source Intelligence (OSINT) is the collection and analysis of publicly available
+                        information. In cybersecurity, OSINT is used during the reconnaissance phase to gather
+                        data about a target. This system demonstrates how attackers can correlate public data
+                        to build attack profiles — and how you can defend against it.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">🔬 How It Works</div>
+                    <div class="card-description" style="margin-bottom:0">
+                        The system uses four AI engines: <strong>Image Analysis</strong> (face detection,
+                        perceptual hashing), <strong>Username Correlation</strong> (pattern matching, alias generation),
+                        <strong>OSINT Correlation</strong> (multi-modal data fusion), and <strong>Risk
+                            Assessment</strong>
+                        (attack vector scoring, defensive recommendations).
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">🛡️ CEH Compliance</div>
+                    <div class="card-description" style="margin-bottom:0">
+                        This system is fully aligned with the Certified Ethical Hacker (CEH) Code of Ethics.
+                        It does not: access private data, bypass authentication, confirm real identities,
+                        perform surveillance, or store user data. It is designed purely for educational
+                        and defensive cybersecurity awareness.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">⚙️ Technology Stack</div>
+                    <div class="card-description" style="margin-bottom:0">
+                        <strong>AI:</strong> OpenCV (face detection), Perceptual Hashing (image fingerprinting),
+                        NLP similarity algorithms<br>
+                        <strong>Backend:</strong> Python, FastAPI<br>
+                        <strong>Frontend:</strong> HTML5, CSS3, JavaScript<br>
+                        <strong>Security:</strong> Input validation, rate limiting, no persistent storage
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📊 Analysis Capabilities</div>
+                    <div class="card-description" style="margin-bottom:0">
+                        • AI-based image similarity and reuse detection<br>
+                        • Cross-platform username correlation<br>
+                        • Bio text information leakage analysis<br>
+                        • Social engineering attack vector assessment<br>
+                        • Multi-platform data aggregation and fusion<br>
+                        • Defensive recommendation engine
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">⚠️ Limitations</div>
+                    <div class="card-description" style="margin-bottom:0">
+                        • Cannot verify real-world identities<br>
+                        • Uses simulated cross-platform data<br>
+                        • Possibility of false positives<br>
+                        • Not intended for law enforcement<br>
+                        • Not intended for surveillance<br>
+                        • Educational demonstration only
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group" style="justify-content: center; margin-top: 32px;">
+                <button class="btn btn-primary" onclick="showSection('analyze')">
+                    🚀 Try It Now
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-text">
+            AI-Based OSINT Correlation & Social Engineering Exposure Analysis System
+        </div>
+        <div class="footer-text" style="font-size:12px; color:var(--text-muted);">
+            CEH-Compliant · Educational Use Only · No Private Data · No Identity Confirmation
+        </div>
+        <div class="footer-links">
+            <a href="#" class="footer-link" onclick="showSection('about'); return false;">About</a>
+            <a href="#" class="footer-link" onclick="showSection('analyze'); return false;">Analyzer</a>
+            <a href="/docs" class="footer-link" target="_blank">API Docs</a>
+        </div>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+
+</html>
