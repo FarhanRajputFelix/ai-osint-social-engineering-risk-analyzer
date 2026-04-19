@@ -19,15 +19,15 @@ The system uses a multi-stage correlation engine to link disparate data points a
 
 ```mermaid
 graph TD
-    A[Public Username/Email] --> B[Crawler Engine]
-    B --> C[Platform Recon: LinkedIn/X/GitHub]
-    C --> D[Data Extraction]
-    D --> E[Multi-Modal Correlation]
-    E --> F[Image Analyzer<br/>(Perceptual Hashing)]
-    E --> G[NLP Analyzer<br/>(Name/Bio Matching)]
-    F --> H[Composite Risk Scorer]
+    A["Public Username/Email"] --> B["Crawler Engine"]
+    B --> C["Platform Recon: LinkedIn/X/GitHub"]
+    C --> D["Data Extraction"]
+    D --> E["Multi-Modal Correlation"]
+    E --> F["Image Analyzer<br/>(Perceptual Hashing)"]
+    E --> G["NLP Analyzer<br/>(Name/Bio Matching)"]
+    F --> H["Composite Risk Scorer"]
     G --> H
-    H --> I[Exposure Report]
+    H --> I["Exposure Report"]
 
     style F fill:#0d6efd,stroke:#fff,color:#fff
     style G fill:#0d6efd,stroke:#fff,color:#fff
